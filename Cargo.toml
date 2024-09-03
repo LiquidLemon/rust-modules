@@ -1,0 +1,2 @@
+[workspace]
+members = [ "hybrid","inline", "minimal", "multi_file", "multi_file_minimal"]
