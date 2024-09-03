@@ -164,8 +164,8 @@ pub fn bar_fn() {
 }
 ```
 
-`main.rs` stays mostly the same, now it only contains two `mod` declarations for the top-level modules as mentioned earlier.
-With `bar` I only had to do the same thing as before - move the contents of the block into a new file (`bar.rs`).
+`main.rs` stays mostly the same, but now it only contains two `mod` declarations for the top-level modules.
+`bar` needed on extra treatment - I just moved its contents into a separate file, same as before.
 I could do the same thing with `foo` but then the file would still contain a nested hierarchy of modules and that's not what I want.
 
 There are two ways of handling nested modules and while in a real project, it would be best to be consistent, for the sake of example I'll show both approaches.
@@ -181,7 +181,7 @@ pub mod nested;
 
 `nested` has yet another module nested inside of it but this time let's look at a different approach to nesting.
 Next to `foo/mod.rs` we have both `foo/nested.rs` and `foo/nested/` (a directory).
-File will have all code which lives in `crate::foo::nested` while the directory is where we'll find anything that belongs to further nested modules.
+The file will have all code which lives in `crate::foo::nested` while the directory is where we'll find anything that belongs to deeper nested modules.
 
 `foo/nested.rs`
 ```rs
@@ -208,7 +208,7 @@ The second approach to nesting, which doesn't utilize `mod.rs` files, is what's 
 ## Library crates
 
 Libraries follow the same pattern of structuring code with the only difference being that the module tree starts at `lib.rs` instead of `main.rs`.
-If you have both a `main.rs` and `lib.rs` file (which you might if your project is both a tool for end users and a library that exposes the same functionality to developers) things behave quite a bit differently.
+If you have both a `main.rs` and a `lib.rs` file (which you might, if your project is both a tool for end users and a library that exposes the same functionality to developers) things behave quite a bit differently.
 When you declare modules in `lib.rs` they won't be available under `crate::` in `main.rs`.
 You could work around this by importing your modules in both places but that's repetitive and error prone.
 The preferred approach is to import your library using the name of the package (as defined in `Cargo.toml`).
@@ -228,4 +228,4 @@ fn main() {
     foo();
 ```
 
-Do keep in mind that this is a special case and accessing the root module by the package name is not possible in other scenarios (for example the name `hybrid` wouldn't be recognized in `lib.rs`).
+Keep in mind that this is a special case and accessing the root module by the package name is not possible in other scenarios (for example the name `hybrid` wouldn't be recognized in `lib.rs`).
